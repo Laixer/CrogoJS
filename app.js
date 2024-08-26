@@ -4,9 +4,6 @@ const { Client } = require('pg');
 
 require('dotenv').config();
 
-// var indexRouter = require('./routes/index');
-// var usersRouter = require('./routes/users');
-
 const client = new Client({
     user: process.env.DB_USER,
     host: process.env.DB_HOST,
@@ -27,9 +24,6 @@ app.set('trust proxy', true);
 
 app.use(logger('dev'));
 app.use(express.json());
-
-// app.use('/', indexRouter);
-// app.use('/users', usersRouter);
 
 app.use('/api', function (req, res, next) {
     const apiKey = process.env.API_KEY;
@@ -55,15 +49,13 @@ app.post('/api/v1/telemetry_host', async (req, res) => {
         return res.status(400).json({ error: 'instance is required' });
     }
 
-    await client.query('INSERT INTO public.telemetry_host("instance", remote_address, "data") VALUES($1, $2, $3)',
-        [
-            data.instance,
-            remoteAddress,
-            data
-        ]
-    )
+    await client.query('INSERT INTO public.telemetry_host("instance", remote_address, "data") VALUES($1, $2, $3)', [
+        data.instance,
+        remoteAddress,
+        data
+    ])
 
-    res.json({ status: 'ok' });
+    res.status(202).end();
 });
 
 app.post('/api/v1/telemetry_gps', async (req, res) => {
@@ -74,15 +66,13 @@ app.post('/api/v1/telemetry_gps', async (req, res) => {
         return res.status(400).json({ error: 'instance is required' });
     }
 
-    await client.query('INSERT INTO public.telemetry_gps("instance", remote_address, "data") VALUES($1, $2, $3)',
-        [
-            data.instance,
-            remoteAddress,
-            data
-        ]
-    )
+    await client.query('INSERT INTO public.telemetry_gps("instance", remote_address, "data") VALUES($1, $2, $3)', [
+        data.instance,
+        remoteAddress,
+        data
+    ])
 
-    res.json({ status: 'ok' });
+    res.status(202).end();
 });
 
 // error handler
@@ -94,7 +84,7 @@ app.use(function (err, req, res, next) {
 // catch 404 and forward to error handler
 app.use(function (req, res) {
     res.status(404);
-    res.json({ error: "Sorry, can't find that" })
+    res.end();
 });
 
 module.exports = app;
