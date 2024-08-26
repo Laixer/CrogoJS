@@ -23,6 +23,7 @@ client.connect()
     .catch(err => console.error('Connection error', err.stack));
 
 var app = express();
+app.set('trust proxy', true);
 
 app.use(logger('dev'));
 app.use(express.json());
