@@ -48,7 +48,7 @@ app.use('/api', function (req, res, next) {
 });
 
 app.post('/api/v1/telemetry_host', async (req, res) => {
-    const remoteAddress = req.socket.remoteAddress;
+    const remoteAddress = req.ip;
     const data = req.body;
 
     if (!data.instance) {
@@ -67,7 +67,7 @@ app.post('/api/v1/telemetry_host', async (req, res) => {
 });
 
 app.post('/api/v1/telemetry_gps', async (req, res) => {
-    const remoteAddress = req.socket.remoteAddress;
+    const remoteAddress = req.ip;
     const data = req.body;
 
     if (!data.instance) {
