@@ -26,20 +26,34 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-app.use('/api', function (req, res, next) {
+app.use('/api/v1', function (req, res, next) {
     const apiKey = process.env.API_KEY;
+
     const authHeader = req.headers.authorization;
-
-    if (!authHeader || !authHeader.startsWith('Basic ')) {
-        return res.status(401).end();
+    if (authHeader.startsWith('Basic ')) {
+        const basicCredentials = authHeader.split(' ')[1];
+        if (basicCredentials === apiKey) {
+            // return res.status(401).end();
+            return next();
+        }
     }
 
-    const basicCredentials = authHeader.split(' ')[1];
-    if (basicCredentials !== apiKey) {
-        return res.status(401).end();
+    const authBody = req.body.token;
+    if (authBody === apiKey) {
+        return next();
     }
 
-    next();
+    // if (!authHeader || !authBody || !authHeader.startsWith('Basic ')) {
+    //     return res.status(401).end();
+    // }
+
+    // const basicCredentials = authHeader.split(' ')[1];
+    // if (basicCredentials !== apiKey) {
+    //     return res.status(401).end();
+    // }
+
+    // next();
+    res.status(401).end();
 });
 
 app.post('/api/v1/telemetry_host', async (req, res) => {
@@ -104,7 +118,7 @@ app.use('/api2', function (req, res, next) {
     next();
 });
 
-app.post('/api2/v1/gateway_test', async (req, res) => {
+app.post('/api/v1/gateway_sms', async (req, res) => {
     const message = req.body.message;
     const sender = req.body.sender;
 
