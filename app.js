@@ -33,7 +33,6 @@ app.use('/api/v1', function (req, res, next) {
     if (authHeader && authHeader.startsWith('Basic ')) {
         const basicCredentials = authHeader.split(' ')[1];
         if (basicCredentials === apiKey) {
-            // return res.status(401).end();
             return next();
         }
     }
@@ -43,16 +42,6 @@ app.use('/api/v1', function (req, res, next) {
         return next();
     }
 
-    // if (!authHeader || !authBody || !authHeader.startsWith('Basic ')) {
-    //     return res.status(401).end();
-    // }
-
-    // const basicCredentials = authHeader.split(' ')[1];
-    // if (basicCredentials !== apiKey) {
-    //     return res.status(401).end();
-    // }
-
-    // next();
     res.status(401).end();
 });
 
@@ -100,24 +89,6 @@ app.post('/api/v1/telemetry_gps', async (req, res) => {
     res.status(202).end();
 });
 
-// app.use('/api2', function (req, res, next) {
-//     // const apiKey = process.env.API_KEY;
-//     const token = req.body.token;
-
-//     console.log('token', token);
-
-//     // if (!authHeader || !authHeader.startsWith('Basic ')) {
-//     //     return res.status(401).end();
-//     // }
-
-//     // const basicCredentials = authHeader.split(' ')[1];
-//     // if (basicCredentials !== apiKey) {
-//     //     return res.status(401).end();
-//     // }
-
-//     next();
-// });
-
 app.post('/api/v1/gateway_sms', async (req, res) => {
     const message = req.body.message;
     const sender = req.body.sender;
@@ -132,26 +103,24 @@ app.post('/api/v1/gateway_sms', async (req, res) => {
 });
 
 app.post('/api/v1/notify', async (req, res) => {
-    // const type = req.body.type;
-    // const action = req.body.action;
-    // const message = req.body.message;
+    const type = req.body.type;
+    const action = req.body.action;
+    const message = req.body.message;
 
-    // if (!message) {
-    //     return res.status(400).send({ error: 'message is required' });
-    // }
+    if (!type || !action || !message) {
+        return res.status(400).json({ error: 'type, action and message are required' });
+    }
 
-    console.log('Received message:', req.body);
-
-    // console.log('Received message:', message, 'type:', type, 'action:', action);
+    console.log('Received message:', message, 'type:', type, 'action:', action);
 
     res.status(202).end();
 });
 
-
 // error handler
 app.use(function (err, req, res, next) {
-    res.status(err.status || 500);
     console.error(err.message);
+
+    res.status(err.status || 500);
     res.end();
 });
 
