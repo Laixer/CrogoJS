@@ -118,28 +118,25 @@ app.post('/api/v1/notify', async (req, res) => {
 
     console.log(`NOTIFY ${topic}: ${message}`);
 
-    // await mg.messages.create(process.env.MAILGUN_DOMAIN, {
-    //     from: "Laixer Equipment <postmaster@laixer.equipment>",
-    //     to: process.env.MAILGUN_RECIPIENT,
-    //     subject: `Notification: ${topic}`,
-    //     text: `Message from ${sender}\n\n${message}`
-    // });
-
     res.status(202).end();
+});
+
+app.get('/api/v1/ip', async (req, res) => {
+    const remoteAddress = req.ip;
+
+    res.json({ ip: remoteAddress });
 });
 
 // error handler
 app.use(function (err, req, res, next) {
     console.error(err.message);
 
-    res.status(err.status || 500);
-    res.end();
+    res.status(err.status || 500).end();
 });
 
 // catch 404 and forward to error handler
 app.use(function (req, res) {
-    res.status(404);
-    res.end();
+    res.status(404).end();
 });
 
 module.exports = app;
