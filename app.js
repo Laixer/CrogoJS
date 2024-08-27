@@ -85,6 +85,35 @@ app.post('/api/v1/telemetry_gps', async (req, res) => {
     res.status(202).end();
 });
 
+app.post('/api2/v1/gateway_test', async (req, res) => {
+    // const remoteAddress = req.ip;
+    // const data = req.body;
+
+    console.log(req.body);
+
+    // if (!data.instance) {
+    //     return res.status(400).json({ error: 'instance is required' });
+    // }
+
+    // if (!data.lat) {
+    //     return res.status(400).json({ error: 'latitude is required' });
+    // }
+
+    // if (!data.lon) {
+    //     return res.status(400).json({ error: 'longitude is required' });
+    // }
+
+    // await client.query('INSERT INTO public.telemetry_gps("instance", remote_address, location, "data") VALUES($1, $2, POINT($3, $4), $5)', [
+    //     data.instance,
+    //     remoteAddress,
+    //     data.lat,
+    //     data.lon,
+    //     data
+    // ])
+
+    res.status(202).end();
+});
+
 // error handler
 app.use(function (err, req, res, next) {
     res.status(err.status || 500);
