@@ -30,12 +30,12 @@ app.use('/api', function (req, res, next) {
     const authHeader = req.headers.authorization;
 
     if (!authHeader || !authHeader.startsWith('Basic ')) {
-        return res.status(401).json({ error: 'authorization header is required' });
+        return res.status(401).end();
     }
 
     const basicCredentials = authHeader.split(' ')[1];
     if (basicCredentials !== apiKey) {
-        return res.status(401).json({ error: 'api-key is invalid' });
+        return res.status(401).end();
     }
 
     next();
