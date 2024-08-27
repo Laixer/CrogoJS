@@ -109,14 +109,14 @@ app.post('/api/v1/gateway_sms', async (req, res) => {
 });
 
 app.post('/api/v1/notify', async (req, res) => {
-    const topic = req.body.type;
+    const topic = req.body.topic;
     const message = req.body.message;
 
     if (!topic || !message) {
-        return res.status(400).json({ error: 'type, action and message are required' });
+        return res.status(400).json({ error: 'type and message are required' });
     }
 
-    console.log(`Notification: ${topic}\n\n${message}`);
+    console.log(`NOTIFY ${topic}: ${message}`);
 
     // await mg.messages.create(process.env.MAILGUN_DOMAIN, {
     //     from: "Laixer Equipment <postmaster@laixer.equipment>",
