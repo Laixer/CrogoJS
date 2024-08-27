@@ -30,7 +30,7 @@ app.use('/api/v1', function (req, res, next) {
     const apiKey = process.env.API_KEY;
 
     const authHeader = req.headers.authorization;
-    if (authHeader.startsWith('Basic ')) {
+    if (authHeader && authHeader.startsWith('Basic ')) {
         const basicCredentials = authHeader.split(' ')[1];
         if (basicCredentials === apiKey) {
             // return res.status(401).end();
