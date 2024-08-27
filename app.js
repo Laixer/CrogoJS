@@ -1,5 +1,7 @@
 const express = require('express');
 var logger = require('morgan');
+const formData = require('form-data');
+const Mailgun = require('mailgun.js');
 const { Client } = require('pg');
 
 require('dotenv').config();
@@ -13,6 +15,13 @@ const client = new Client({
     ssl: {
         rejectUnauthorized: false,
     }
+});
+
+const mailgun = new Mailgun(formData);
+const mg = mailgun.client({
+    username: 'api',
+    key: process.env.MAILGUN_API_KEY,
+    url: process.env.MAILGUN_URL
 });
 
 client.connect()
@@ -89,7 +98,12 @@ app.post('/api/v1/gateway_sms', async (req, res) => {
         return res.status(400).send({ error: 'message is required' });
     }
 
-    console.log('Received message:', message, 'from', sender);
+    await mg.messages.create(process.env.MAILGUN_DOMAIN, {
+        from: "Laixer Equipment <postmaster@laixer.equipment>",
+        to: process.env.MAILGUN_RECIPIENT,
+        subject: "SMS Gateway",
+        text: `Message from ${sender}\n\n${message}`
+    });
 
     res.status(202).end();
 });
