@@ -89,7 +89,7 @@ app.post('/api2/v1/gateway_test', async (req, res) => {
     // const remoteAddress = req.ip;
     // const data = req.body;
 
-    console.log(req.body);
+    console.log('Request', req);
 
     // if (!data.instance) {
     //     return res.status(400).json({ error: 'instance is required' });
