@@ -109,15 +109,21 @@ app.post('/api/v1/gateway_sms', async (req, res) => {
 });
 
 app.post('/api/v1/notify', async (req, res) => {
-    const type = req.body.type;
-    const action = req.body.action;
+    const topic = req.body.type;
     const message = req.body.message;
 
-    if (!type || !action || !message) {
+    if (!topic || !message) {
         return res.status(400).json({ error: 'type, action and message are required' });
     }
 
-    console.log('Received message:', message, 'type:', type, 'action:', action);
+    console.log(`Notification: ${topic}\n\n${message}`);
+
+    // await mg.messages.create(process.env.MAILGUN_DOMAIN, {
+    //     from: "Laixer Equipment <postmaster@laixer.equipment>",
+    //     to: process.env.MAILGUN_RECIPIENT,
+    //     subject: `Notification: ${topic}`,
+    //     text: `Message from ${sender}\n\n${message}`
+    // });
 
     res.status(202).end();
 });
