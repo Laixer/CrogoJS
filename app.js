@@ -86,23 +86,33 @@ app.post('/api/v1/telemetry_gps', async (req, res) => {
     res.status(202).end();
 });
 
+app.use('/api2', function (req, res, next) {
+    // const apiKey = process.env.API_KEY;
+    const token = req.body.token;
+
+    console.log('token', token);
+
+    // if (!authHeader || !authHeader.startsWith('Basic ')) {
+    //     return res.status(401).end();
+    // }
+
+    // const basicCredentials = authHeader.split(' ')[1];
+    // if (basicCredentials !== apiKey) {
+    //     return res.status(401).end();
+    // }
+
+    next();
+});
+
 app.post('/api2/v1/gateway_test', async (req, res) => {
-    // const remoteAddress = req.ip;
-    // const data = req.body;
+    const message = req.body.message;
+    const sender = req.body.sender;
 
-    console.log('Request', req.body);
+    if (!message) {
+        return res.status(400).send({ error: 'message is required' });
+    }
 
-    // if (!data.instance) {
-    //     return res.status(400).json({ error: 'instance is required' });
-    // }
-
-    // if (!data.lat) {
-    //     return res.status(400).json({ error: 'latitude is required' });
-    // }
-
-    // if (!data.lon) {
-    //     return res.status(400).json({ error: 'longitude is required' });
-    // }
+    console.log('Received message:', message, 'from', sender);
 
     // await client.query('INSERT INTO public.telemetry_gps("instance", remote_address, location, "data") VALUES($1, $2, POINT($3, $4), $5)', [
     //     data.instance,
