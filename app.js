@@ -100,23 +100,23 @@ app.post('/api/v1/telemetry_gps', async (req, res) => {
     res.status(202).end();
 });
 
-app.use('/api2', function (req, res, next) {
-    // const apiKey = process.env.API_KEY;
-    const token = req.body.token;
+// app.use('/api2', function (req, res, next) {
+//     // const apiKey = process.env.API_KEY;
+//     const token = req.body.token;
 
-    console.log('token', token);
+//     console.log('token', token);
 
-    // if (!authHeader || !authHeader.startsWith('Basic ')) {
-    //     return res.status(401).end();
-    // }
+//     // if (!authHeader || !authHeader.startsWith('Basic ')) {
+//     //     return res.status(401).end();
+//     // }
 
-    // const basicCredentials = authHeader.split(' ')[1];
-    // if (basicCredentials !== apiKey) {
-    //     return res.status(401).end();
-    // }
+//     // const basicCredentials = authHeader.split(' ')[1];
+//     // if (basicCredentials !== apiKey) {
+//     //     return res.status(401).end();
+//     // }
 
-    next();
-});
+//     next();
+// });
 
 app.post('/api/v1/gateway_sms', async (req, res) => {
     const message = req.body.message;
@@ -128,21 +128,29 @@ app.post('/api/v1/gateway_sms', async (req, res) => {
 
     console.log('Received message:', message, 'from', sender);
 
-    // await client.query('INSERT INTO public.telemetry_gps("instance", remote_address, location, "data") VALUES($1, $2, POINT($3, $4), $5)', [
-    //     data.instance,
-    //     remoteAddress,
-    //     data.lat,
-    //     data.lon,
-    //     data
-    // ])
+    res.status(202).end();
+});
+
+app.post('/api/v1/notify', async (req, res) => {
+    const type = req.body.type;
+    const action = req.body.action;
+    const message = req.body.message;
+
+    if (!message) {
+        return res.status(400).send({ error: 'message is required' });
+    }
+
+    console.log('Received message:', message, 'type:', type, 'action:', action);
 
     res.status(202).end();
 });
 
+
 // error handler
 app.use(function (err, req, res, next) {
     res.status(err.status || 500);
-    res.json({ error: err.message });
+    console.error(err.message);
+    res.end();
 });
 
 // catch 404 and forward to error handler
