@@ -24,6 +24,7 @@ app.set('trust proxy', true);
 
 app.use(logger('dev'));
 app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 
 app.use('/api', function (req, res, next) {
     const apiKey = process.env.API_KEY;
@@ -89,7 +90,7 @@ app.post('/api2/v1/gateway_test', async (req, res) => {
     // const remoteAddress = req.ip;
     // const data = req.body;
 
-    console.log('Request', req);
+    console.log('Request', req.body);
 
     // if (!data.instance) {
     //     return res.status(400).json({ error: 'instance is required' });
