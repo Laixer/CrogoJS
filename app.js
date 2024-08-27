@@ -132,15 +132,17 @@ app.post('/api/v1/gateway_sms', async (req, res) => {
 });
 
 app.post('/api/v1/notify', async (req, res) => {
-    const type = req.body.type;
-    const action = req.body.action;
-    const message = req.body.message;
+    // const type = req.body.type;
+    // const action = req.body.action;
+    // const message = req.body.message;
 
-    if (!message) {
-        return res.status(400).send({ error: 'message is required' });
-    }
+    // if (!message) {
+    //     return res.status(400).send({ error: 'message is required' });
+    // }
 
-    console.log('Received message:', message, 'type:', type, 'action:', action);
+    console.log('Received message:', req.body);
+
+    // console.log('Received message:', message, 'type:', type, 'action:', action);
 
     res.status(202).end();
 });
