@@ -35,6 +35,10 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
+app.get('/', (req, res) => {
+    res.sendFile('/home/yorick/Documents/index.html');
+});
+
 app.use('/api/v1', function (req, res, next) {
     const apiKey = process.env.API_KEY;
 
